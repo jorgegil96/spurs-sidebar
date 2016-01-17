@@ -5,7 +5,7 @@ import urllib.parse as par
 from datetime import date, timedelta
 import praw
 
-print ('Please wait until you see "Done!", it may take up to 20 seconds for the script to run. Warnings may appear, ignore them.')
+print ('Please wait, it may take up to 20 seconds for the script to run')
 recordUrl = "http://stats.nba.com/stats/playoffpicture?LeagueID=00&SeasonID=22015"
 response = ur.urlopen(recordUrl).read()
 recordData = json.loads(response.decode('utf-8'))
@@ -234,11 +234,15 @@ sidebarText += ('\n4. [](http://en.wikipedia.org/wiki/2006%E2%80%9307_San_Antoni
 sidebarText += ('\n5. [](http://en.wikipedia.org/wiki/2013%E2%80%9314_San_Antonio_Spurs_season)')
 
 # Post sidebar text to subreddit
-# FILL IN placeholders
-r = praw.Reddit(user_agent='/r/nbaspurs sidebar bot by /u/jorgegil96 v1.0')
-r.login('username', 'password') # Must be a moderator
-r.get_subreddit('nbaspurs').update_settings(description=sidebarText)
-print ('Done!')
+print ('Reddit Crendentials (Must be moderator of subreddit)')
+subreddit = input('Subreddit: /r/')
+username = input('Username: ')
+password = input('Password: ')
+print ('Wait until you see "Done!", ignore warnings')
+r = praw.Reddit(user_agent='/r/nbaspurs sidebar script by /u/jorgegil96 v1.0')
+r.login(username, password, disable_warning=True)
+r.get_subreddit(subreddit).update_settings(description=sidebarText)
+print ('\nDone!')
 
 
 
