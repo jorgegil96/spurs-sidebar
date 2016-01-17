@@ -1,8 +1,11 @@
+#! /usr/local/bin/python3.5.1
 import json
 import urllib.request as ur
 import urllib.parse as par
 from datetime import date, timedelta
+import praw
 
+print ('Please wait until you see "Done!", it may take up to 20 seconds for the script to run. Warnings may appear, ignore them.')
 recordUrl = "http://stats.nba.com/stats/playoffpicture?LeagueID=00&SeasonID=22015"
 response = ur.urlopen(recordUrl).read()
 recordData = json.loads(response.decode('utf-8'))
@@ -14,10 +17,10 @@ for i in range(0,15):
 	if westStandings[i][3] == spursID:
 		spursRecord = str(westStandings[i][4]) + '-' + str(westStandings[i][5])
 
-print ('[48 Minutes of Hell](http://www.48minutesofhell.com/) | [Pounding the Rock](http://www.poundingtherock.com/) | [Spurstalk](http://www.spurstalk.com/forums/)')
-print ('\n------')
-print ('**2015-2016 Spurs Schedule | Record: ' + spursRecord + '**\n')
-print ('------\n')
+sidebarText = ('[48 Minutes of Hell](http://www.48minutesofhell.com/) | [Pounding the Rock](http://www.poundingtherock.com/) | [Spurstalk](http://www.spurstalk.com/forums/)')
+sidebarText += ('\n\n------')
+sidebarText += ('\n**2015-2016 Spurs Schedule | Record: ' + spursRecord + '**\n')
+sidebarText += ('\n------\n')
 
 teamSubs = {}
 teamSubs['1610612742'] = 'mavericks'
@@ -57,8 +60,8 @@ teamSubs['1610612764'] = 'whashingtonwizards'
 def formatDate(date):
     return str(date.month) + '%2F' + str(date.day) + '%2F' + str(date.year)
     
-print ('| | | | | | |')
-print (':--:|:--:|:--:|:--:|:--:|:--:|:--:')
+sidebarText += ('\n| | | | | | |')
+sidebarText += ('\n:--:|:--:|:--:|:--:|:--:|:--:|:--:')
 today = date.today()
 
 scheduleList = [None] * 6
@@ -86,9 +89,15 @@ while pastGames < 2:
                 scheduleList[1] = rowSet[i][5]
                 scoreSet = data["resultSets"][1]["rowSet"]
                 if (scoreSet[i * 2][21] > scoreSet[i * 2 + 1][21]):
-                    WLTimeList[1] = 'W'
+                    if (rowSet[i][7] == spursID):
+                        WLTimeList[1] = 'W'
+                    else:
+                        WLTimeList[1] = 'L'
                 else:
-                    WLTimeList[1] = 'L'
+                    if (rowSet[i][6] == spursID):
+                        WLTimeList[1] = 'W'
+                    else:
+                        WLTimeList[1] = 'L'
                 scoreTV[1] = str(scoreSet[i * 2][21]) + '-' + str(scoreSet[i * 2 + 1][21])
             elif pastGames == 1:
                 dateList[0] = str(newDate.month) + '/' + str(newDate.day)
@@ -97,9 +106,15 @@ while pastGames < 2:
                 scheduleList[0] = rowSet[i][5]
                 scoreSet = data["resultSets"][1]["rowSet"]
                 if (scoreSet[i * 2][21] > scoreSet[i * 2 + 1][21]):
-                    WLTimeList[0] = 'W'
+                    if (rowSet[i][7] == spursID):
+                        WLTimeList[0] = 'W'
+                    else:
+                        WLTimeList[0] = 'L'
                 else:
-                    WLTimeList[0] = 'L'
+                    if (rowSet[i][6] == spursID):
+                        WLTimeList[0] = 'W'
+                    else:
+                        WLTimeList[0] = 'L'
                 scoreTV[0] = str(scoreSet[i * 2][21]) + '-' + str(scoreSet[i * 2 + 1][21])
             # End if
             pastGames += 1
@@ -135,15 +150,15 @@ while futureGames < 4:
 # End while
 
 # Previous Games
-print (dateList[0] + ' | [](/r/' + awayList[0] + ') | @ | [](/r/' + homeList[0] + ') | ' + WLTimeList[0] + ' | ' + scoreTV[0])
-print (dateList[1] + ' | [](/r/' + awayList[1] + ') | @ | [](/r/' + homeList[1] + ') | ' + WLTimeList[1] + ' | ' + scoreTV[1])
+sidebarText += ('\n' + dateList[0] + ' | [](/r/' + awayList[0] + ') | @ | [](/r/' + homeList[0] + ') | ' + WLTimeList[0] + ' | ' + scoreTV[0])
+sidebarText += ('\n' + dateList[1] + ' | [](/r/' + awayList[1] + ') | @ | [](/r/' + homeList[1] + ') | ' + WLTimeList[1] + ' | ' + scoreTV[1])
 
 # Future Games
 for i in range(2, 6):
-    print (dateList[i] + ' | [](/r/' + awayList[i] + ') | @ | [](/r/' + homeList[i] + ') | ' + WLTimeList[i] + ' | ' + scoreTV[i])
+    sidebarText += ('\n' + dateList[i] + ' | [](/r/' + awayList[i] + ') | @ | [](/r/' + homeList[i] + ') | ' + WLTimeList[i] + ' | ' + scoreTV[i])
 
-print ('\n| | | | |')
-print (':--:|:--:|:--:|:--:|')
+sidebarText += ('\n\n| | | | |')
+sidebarText += ('\n:--:|:--:|:--:|:--:|')
 
 
 #------PLAYER STATS------
@@ -156,12 +171,12 @@ playerIDs = ["1626246", "2564", "201980", "2561", "203613", "202695", "203937",
 roosterSize = len(playerNames)
 
 # Table Headers
-print ('------')
-print ('**Team Stats**\n')
-print ('------\n')
-print ('| | | | | | |')
-print (':--:|:--:|:--:|:--:|:--:|:--:|:--:')
-print ('Player | PTS | REB | AST | STL | BLK')
+sidebarText += ('\n------')
+sidebarText += ('\n**Team Stats**\n')
+sidebarText += ('\n------\n')
+sidebarText += ('\n| | | | | | |')
+sidebarText += ('\n:--:|:--:|:--:|:--:|:--:|:--:|:--:')
+sidebarText += ('\n**Player** | **PTS** | **REB** | **AST** | **STL** | **BLK**')
 
 for i in range(0,roosterSize):
 	# Get data from stats.nba.com in json format
@@ -191,38 +206,39 @@ for i in range(0,roosterSize):
 			PTS = seasonStatsList[seasonsCount - 1][j]
 		# End if
 	# End for
-	print (playerNames[i] + ' | ' + str(PTS) + ' | ' + str(REB) + ' | ' + str(AST) + ' | ' + str(STL) + ' | ' + str(BLK))
+	sidebarText += ('\n' + playerNames[i] + ' | ' + str(PTS) + ' | ' + str(REB) + ' | ' + str(AST) + ' | ' + str(STL) + ' | ' + str(BLK))
 #End for
 
 # Table footer
-print ('\n| | | | |')
-print (':--:|:--:|:--:|:--:|\n')
+sidebarText += ('\n\n| | | | |')
+sidebarText += ('\n:--:|:--:|:--:|:--:|\n')
 
 
 #------RULES-------
-print ('\n**BE NICE.**\n')
-print ('Troll posts will be removed and violators may be banned. Lighthearted shittalking is allowed. We will make judgement calls about what qualifies.\n')
-print ('**POST SPURS RELATED CONTENT ONLY.**\n')
-print ('Reaction GIFs, image macros, or memes will be removed if they do not contain content that is substantially related to the Spurs.\n')
-print ('**NO SPAMMING.**\n' )
-print ('Original content from your blog about the Spurs (or similar such content) is welcome, but if that\'s the only thing you post, and you do not otherwise participate in the community, your posts may be removed.  Duplicate posts may be removed. Short text "comment" posts may also be removed.\n')
+sidebarText += ('\n\n**BE NICE.**\n')
+sidebarText += ('\nTroll posts will be removed and violators may be banned. Lighthearted shittalking is allowed. We will make judgement calls about what qualifies.\n')
+sidebarText += ('\n**POST SPURS RELATED CONTENT ONLY.**\n')
+sidebarText += ('\nReaction GIFs, image macros, or memes will be removed if they do not contain content that is substantially related to the Spurs.\n')
+sidebarText += ('\n**NO SPAMMING.**\n' )
+sidebarText += ('\nOriginal content from your blog about the Spurs (or similar such content) is welcome, but if that\'s the only thing you post, and you do not otherwise participate in the community, your posts may be removed.  Duplicate posts may be removed. Short text "comment" posts may also be removed.\n')
 
-print ('#### [](/skyline)\n')
-print ('##### [](/headerlinks)')
-print ('* [](http://reddit.com)\n')
-print ('###### [](/headerlinks)')
-print ('* [](/r/nba)\n')
-print ('1. [](http://en.wikipedia.org/wiki/1998%E2%80%9399_San_Antonio_Spurs_season)')
-print ('2. [](http://en.wikipedia.org/wiki/2002%E2%80%9303_San_Antonio_Spurs_season)')
-print ('3. [](http://en.wikipedia.org/wiki/2004%E2%80%9305_San_Antonio_Spurs_season)')
-print ('4. [](http://en.wikipedia.org/wiki/2006%E2%80%9307_San_Antonio_Spurs_season)')
-print ('5. [](http://en.wikipedia.org/wiki/2013%E2%80%9314_San_Antonio_Spurs_season)')
+sidebarText += ('\n#### [](/skyline)\n')
+sidebarText += ('\n##### [](/headerlinks)')
+sidebarText += ('\n* [](http://reddit.com)\n')
+sidebarText += ('\n###### [](/headerlinks)')
+sidebarText += ('\n* [](/r/nba)\n')
+sidebarText += ('\n1. [](http://en.wikipedia.org/wiki/1998%E2%80%9399_San_Antonio_Spurs_season)')
+sidebarText += ('\n2. [](http://en.wikipedia.org/wiki/2002%E2%80%9303_San_Antonio_Spurs_season)')
+sidebarText += ('\n3. [](http://en.wikipedia.org/wiki/2004%E2%80%9305_San_Antonio_Spurs_season)')
+sidebarText += ('\n4. [](http://en.wikipedia.org/wiki/2006%E2%80%9307_San_Antonio_Spurs_season)')
+sidebarText += ('\n5. [](http://en.wikipedia.org/wiki/2013%E2%80%9314_San_Antonio_Spurs_season)')
 
-
-
-
-
-
+# Post sidebar text to subreddit
+# FILL IN placeholders
+r = praw.Reddit(user_agent='/r/nbaspurs sidebar bot by /u/jorgegil96 v1.0')
+r.login('username', 'password') # Must be a moderator
+r.get_subreddit('nbaspurs').update_settings(description=sidebarText)
+print ('Done!')
 
 
 
