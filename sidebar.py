@@ -5,7 +5,7 @@ import urllib.parse as par
 from datetime import date, timedelta
 import praw
 
-print ('Please wait, it may take up to 20 seconds for the script to run')
+print ('Please wait, it may take up to 30 seconds for the script to run')
 recordUrl = "http://stats.nba.com/stats/playoffpicture?LeagueID=00&SeasonID=22015"
 response = ur.urlopen(recordUrl).read()
 recordData = json.loads(response.decode('utf-8'))
@@ -134,14 +134,29 @@ while futureGames < 4:
     rowSet = data["resultSets"][0]["rowSet"]
     for i in range(0, len(rowSet)):
         if (rowSet[i][6] == spursID or rowSet[i][7] == spursID):
+            if (cont == 0):
+                scoreSet = data["resultSets"][1]["rowSet"]
+                if (scoreSet[i * 2][21] > scoreSet[i * 2 + 1][21]):
+                    if (rowSet[i][7] == spursID):
+                        WLTimeList[2 + futureGames] = 'W'
+                    else:
+                        WLTimeList[2 + futureGames] = 'L'
+                else:
+                    if (rowSet[i][6] == spursID):
+                        WLTimeList[2 + futureGames] = 'W'
+                    else:
+                        WLTimeList[2 + futureGames] = 'L'
+                scoreTV[2 + futureGames] = str(scoreSet[i * 2][21]) + '-' + str(scoreSet[i * 2 + 1][21])
+            else:
+                WLTimeList[2 + futureGames] = '?'
+                if rowSet[i][11] == None:
+                    scoreTV[2 + futureGames] = 'FSSW'
+                else:
+                    scoreTV[2 + futureGames] = str(rowSet[i][11])
+            # End if
             dateList[2 + futureGames] = str(newDate.month) + '/' + str(newDate.day)
             homeList[2 + futureGames] = teamSubs[str(rowSet[i][6])]
             awayList[2 + futureGames] = teamSubs[str(rowSet[i][7])]
-            WLTimeList[2 + futureGames] = '?'
-            if rowSet[i][11] == None:
-                scoreTV[2 + futureGames] = 'FSSW'
-            else:
-                scoreTV[2 + futureGames] = str(rowSet[i][11])
             scheduleList[2 + futureGames] = rowSet[i][5]
             futureGames += 1
         # End if
