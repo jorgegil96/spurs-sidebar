@@ -54,7 +54,7 @@ teamSubs['1610612755'] = 'sixers'
 teamSubs['1610612761'] = 'torontoraptors'
 teamSubs['1610612764'] = 'whashingtonwizards'
 
-# TODO: AUTOMATE SCHEDULE
+# TODO: REPLACE ? IN SCHEDULE WITH TIME
 #url = http://stats.nba.com/stats/scoreboardV2?DayOffset=0&LeagueID=00&gameDate=1%2F12%2F2016
 #------SCHEDULE-------
 def formatDate(date):
@@ -183,7 +183,7 @@ playerNames = ["Boban Marjanovic", "Boris Diaw", "Danny Green", "David West", "J
 playerIDs = ["1626246", "2564", "201980", "2561", "203613", "202695", "203937", 
 	"200746", "1938", "2588", "201988", "2446", "203492", "1495", "2225"]
 
-roosterSize = len(playerNames)
+rosterSize = len(playerNames)
 
 # Table Headers
 sidebarText += ('\n------')
@@ -193,7 +193,7 @@ sidebarText += ('\n| | | | | | |')
 sidebarText += ('\n:--:|:--:|:--:|:--:|:--:|:--:|:--:')
 sidebarText += ('\n**Player** | **PTS** | **REB** | **AST** | **STL** | **BLK**')
 
-for i in range(0,roosterSize):
+for i in range(0,rosterSize):
 	# Get data from stats.nba.com in json format
 	url = "http://stats.nba.com/stats/playerprofilev2?playerID=" + playerIDs[i] + "&PerMode=PerGame"
 	response = ur.urlopen(url).read()
