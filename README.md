@@ -1,2 +1,2 @@
 # spurs-sidebar
-Python script to generate table of the spurs rooster stats
+Python script to generate table of the spurs roster stats
