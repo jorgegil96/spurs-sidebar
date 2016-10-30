@@ -26,7 +26,7 @@ for i in range(0,15):
 
 sidebarText = ('[48 Minutes of Hell](http://www.48minutesofhell.com/) | [Pounding the Rock](http://www.poundingtherock.com/) | [Spurstalk](http://www.spurstalk.com/forums/)')
 sidebarText += ('\n\n------')
-sidebarText += ('\n**2015-2016 Spurs Schedule | Record: ' + spursRecord + '**\n')
+sidebarText += ('\n**[2016-2017 Spurs Schedule](http://www.nba.com/spurs/schedule/) | Record: ' + spursRecord + '**\n')
 sidebarText += ('\n------\n')
 
 teamSubs = {}
@@ -192,8 +192,6 @@ sidebarText += ('\n' + dateList[1] + ' | [](/r/' + awayList[1] + ') | @ | [](/r/
 for i in range(2, 6):
     sidebarText += ('\n' + dateList[i] + ' | [](/r/' + awayList[i] + ') | @ | [](/r/' + homeList[i] + ') | ' + WLTimeList[i] + ' | ' + scoreTV[i])
 
-sidebarText += ('\n\n| | | | |')
-sidebarText += ('\n:--:|:--:|:--:|:--:|')
 
 
 #------PLAYER STATS------
@@ -206,18 +204,19 @@ playerIDs = ["2225", "201980", "202695", "200746", "2200",
 "202722", "203473", "1627854", "1627879", "1627749"]
 
 rosterSize = len(playerNames)
-rosterSize -= 1 # Dejounte not playing causes errors. 
 
-# Table Headers
-sidebarText += ('\n------')
-sidebarText += ('\n**Team Stats**\n')
-sidebarText += ('\n------\n')
-sidebarText += ('\n| | | | | | |')
-sidebarText += ('\n:--:|:--:|:--:|:--:|:--:|:--:|:--:')
+#sidebarText += ('\n\n| | | | |')
+#sidebarText += ('\n:--:|:--:|:--:|:--:|')
+#sidebarText += ('\n------')
+#sidebarText += ('\n**Team Stats**\n')
+#sidebarText += ('\n------\n')
+
+# Stats table Headers
+sidebarText += ('\n\n| | | | | | |')
+sidebarText += ('\n|--:|:--:|:--:|:--:|:--:|:--:|:--:')
 sidebarText += ('\n**Player** | **PTS** | **REB** | **AST** | **STL** | **BLK**')
 
 for i in range(0,rosterSize):
-    print (i)
     # Get data from stats.nba.com in json format
     url = "http://stats.nba.com/stats/playerprofilev2?playerID=" + playerIDs[i] + "&PerMode=PerGame"
     response = getUrlContent(url)
@@ -245,6 +244,7 @@ for i in range(0,rosterSize):
             PTS = seasonStatsList[seasonsCount - 1][j]
         # End if
     # End for
+    print ("Got " + playerNames[i] + " stats")
     sidebarText += ('\n' + playerNames[i] + ' | ' + str(PTS) + ' | ' + str(REB) + ' | ' + str(AST) + ' | ' + str(STL) + ' | ' + str(BLK))
 #End for
 
