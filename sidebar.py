@@ -147,7 +147,7 @@ while futureGames < 4:
             if (cont == 0):
                 scoreSet = data["resultSets"][1]["rowSet"]
                 if scoreSet[i * 2][21] == None:
-                    WLTimeList[2 + futureGames] = '?'
+                    WLTimeList[2 + futureGames] = rowSet[i][4].replace("pm ", "")
                     if rowSet[i][11] == None:
                         scoreTV[2 + futureGames] = 'FSSW'
                     else:
@@ -165,7 +165,7 @@ while futureGames < 4:
                             WLTimeList[2 + futureGames] = 'L'
                     scoreTV[2 + futureGames] = str(scoreSet[i * 2][21]) + '-' + str(scoreSet[i * 2 + 1][21])
             else:
-                WLTimeList[2 + futureGames] = '?'
+                WLTimeList[2 + futureGames] = rowSet[i][4].replace("pm ", "")
                 if rowSet[i][11] == None:
                     scoreTV[2 + futureGames] = 'FSSW'
                 else:
