@@ -281,9 +281,8 @@ subreddit = raw_input('Subreddit: /r/')
 username = raw_input('Username: ')
 password = raw_input('Password: ')
 print ('Wait until you see "Done!", ignore warnings')
-r = praw.Reddit(user_agent='/r/nbaspurs sidebar script by /u/jorgegil96 v1.0')
-r.login(username, password, disable_warning=True)
-r.get_subreddit(subreddit).update_settings(description=sidebarText)
+r = praw.Reddit(user_agent='/r/nbaspurs sidebar script by /u/jorgegil96 v1.0', client_id='Jkzw2sNCMGZT3Q', client_secret='ge4I8WXDJE9k1oElKEBGJP-PfJs', password=password, username=username)
+r.subreddit(subreddit).mod.update(description=sidebarText)
 print ('\nDone!')
 
 
