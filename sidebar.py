@@ -24,7 +24,7 @@ for i in range(0,15):
     if westStandings[i][3] == spursID:
         spursRecord = str(westStandings[i][4]) + '-' + str(westStandings[i][5])
 
-sidebarText = ('[48 Minutes of Hell](http://www.48minutesofhell.com/) | [Pounding the Rock](http://www.poundingtherock.com/) | [Spurstalk](http://www.spurstalk.com/forums/)')
+sidebarText = ('[Pounding the Rock](http://www.poundingtherock.com/) | [Spurstalk](http://www.spurstalk.com/forums/)')
 sidebarText += ('\n\n------')
 sidebarText += ('\n**[2016-2017 Spurs Schedule](http://www.nba.com/spurs/schedule/) | Record: ' + spursRecord + '**\n')
 sidebarText += ('\n------\n')
