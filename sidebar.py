@@ -1,6 +1,7 @@
 import json
 import urllib2
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
+from dateutil import tz
 import praw
 
 def getUrlContent(url):
@@ -10,6 +11,16 @@ def getUrlContent(url):
     resp = urllib2.urlopen(req)
     return resp.read()
 
+def timeStringToCentral(s):
+    from_zone = tz.gettz('America/New_York')
+    to_zone = tz.gettz('America/Chicago')
+    time = datetime.strptime(s[:-3], '%I:%M %p')
+    newyork = time.replace(tzinfo=from_zone)
+    central = newyork.astimezone(to_zone)
+    formatted = datetime.strftime(central, '%I:%M')
+    if formatted[0] == '0':
+        formatted = formatted[1:]
+    return formatted + " CT"
 
 print ('Please wait, the script may take a while to run')
 recordUrl = "http://stats.nba.com/stats/playoffpicture?LeagueID=00&SeasonID=22016"
@@ -147,7 +158,7 @@ while futureGames < 4:
             if (cont == 0):
                 scoreSet = data["resultSets"][1]["rowSet"]
                 if scoreSet[i * 2][21] == None:
-                    WLTimeList[2 + futureGames] = rowSet[i][4].replace("pm ", "")
+                    WLTimeList[2 + futureGames] = timeStringToCentral(rowSet[i][4])
                     if rowSet[i][11] == None:
                         scoreTV[2 + futureGames] = 'FSSW'
                     else:
@@ -165,7 +176,7 @@ while futureGames < 4:
                             WLTimeList[2 + futureGames] = 'L'
                     scoreTV[2 + futureGames] = str(scoreSet[i * 2][21]) + '-' + str(scoreSet[i * 2 + 1][21])
             else:
-                WLTimeList[2 + futureGames] = rowSet[i][4].replace("pm ", "")
+                WLTimeList[2 + futureGames] = timeStringToCentral(rowSet[i][4])
                 if rowSet[i][11] == None:
                     scoreTV[2 + futureGames] = 'FSSW'
                 else:
@@ -197,11 +208,11 @@ for i in range(2, 6):
 #------PLAYER STATS------
 playerNames = ["Tony Parker", "Danny Green", "Kawhi Leonard", "LaMarcus Aldridge", "Pau Gasol",
 "Patty Mills", "Manu Ginobili", "Kyle Anderson", "Jonathon Simmons", "David Lee",
-"Davis Bertans", "Dewayne Dedmon", "Bryn Forbes", "Nicolas Laprovittola", "Dejounte Murray"]
+"Davis Bertans", "Dewayne Dedmon", "Bryn Forbes", "Dejounte Murray"]
 
 playerIDs = ["2225", "201980", "202695", "200746", "2200", 
 "201988", "1938", "203937", "203613", "101135",
-"202722", "203473", "1627854", "1627879", "1627749"]
+"202722", "203473", "1627854", "1627749"]
 
 rosterSize = len(playerNames)
 
@@ -277,9 +288,12 @@ sidebarText += ('\n5. [](http://en.wikipedia.org/wiki/2013%E2%80%9314_San_Antoni
 
 # Post sidebar text to subreddit
 print ('Reddit Crendentials (Must be moderator of subreddit)')
-subreddit = raw_input('Subreddit: /r/')
-username = raw_input('Username: ')
-password = raw_input('Password: ')
+#subreddit = raw_input('Subreddit: /r/')
+#username = raw_input('Username: ')
+#password = raw_input('Password: ')
+subreddit = 'nbaspurs'
+username = 'username'
+password = 'password'
 print ('Wait until you see "Done!", ignore warnings')
 r = praw.Reddit(user_agent='/r/nbaspurs sidebar script by /u/jorgegil96 v1.0', client_id='Jkzw2sNCMGZT3Q', client_secret='ge4I8WXDJE9k1oElKEBGJP-PfJs', password=password, username=username)
 r.subreddit(subreddit).mod.update(description=sidebarText)
