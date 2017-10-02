@@ -3,13 +3,16 @@ import urllib2
 from datetime import date, timedelta, datetime
 from dateutil import tz
 import praw
+import requests
 
-def getUrlContent(url):
-    req = urllib2.Request(url)
-    req.add_header('User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36')
-    req.add_header('Referer', 'http://stats.nba.com/scores/')
-    resp = urllib2.urlopen(req)
-    return resp.read()
+def getUrlContent2(url):
+    headers = {'user-agent': ('Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36'),
+    'Dnt': ('1'),
+    'Accept-Encoding': ('gzip, deflate, sdch'),
+    'Accept-Language': ('en'),
+    'origin': ('http://stats.nba.com')}
+    response = requests.get(url, headers = headers)
+    return json.loads(response.text)
 
 def timeStringToCentral(s):
     from_zone = tz.gettz('America/New_York')
@@ -23,9 +26,8 @@ def timeStringToCentral(s):
     return formatted + " CT"
 
 print ('Please wait, the script may take a while to run')
-recordUrl = "http://stats.nba.com/stats/playoffpicture?LeagueID=00&SeasonID=22016"
-response = getUrlContent(recordUrl)
-recordData = json.loads(response.decode('utf-8'))
+recordUrl = "http://stats.nba.com/stats/playoffpicture?LeagueID=00&SeasonID=22017"
+recordData = getUrlContent2(recordUrl)
 print ('Got record')
 
 #------HEADINGS AND RECORD-------
@@ -35,9 +37,9 @@ for i in range(0,15):
     if westStandings[i][3] == spursID:
         spursRecord = str(westStandings[i][4]) + '-' + str(westStandings[i][5])
 
-sidebarText = ('[Pounding the Rock](http://www.poundingtherock.com/) | [Spurstalk](http://www.spurstalk.com/forums/)')
+sidebarText = ('[Pounding the Rock](http://www.poundingtherock.com/) | [Spurstalk](http://www.spurstalk.com/forums/) | [Spurs Discord](https://discord.gg/rcvBDQ6)')
 sidebarText += ('\n\n------')
-sidebarText += ('\n**[2016-2017 Spurs Schedule](http://www.nba.com/spurs/schedule/) | Record: ' + spursRecord + '**\n')
+sidebarText += ('\n**[2017-2018 Spurs Schedule](http://www.nba.com/spurs/schedule/) | Record: ' + spursRecord + '**\n')
 sidebarText += ('\n------\n')
 
 teamSubs = {}
@@ -89,14 +91,13 @@ awayList = [None] * 6
 WLTimeList = [None] * 6
 scoreTV = [None] * 6
 
-pastGames = 0
+pastGames = 2
 cont = 1
 while pastGames < 2:
     newDate = today - timedelta(days=cont)
     date = formatDate(newDate)
     url = "http://stats.nba.com/stats/scoreboardV2?DayOffset=0&LeagueID=00&gameDate=" + date
-    response = getUrlContent(url)
-    data = json.loads(response.decode('utf-8'))
+    data = getUrlContent2(url)
 
     rowSet = data["resultSets"][0]["rowSet"]
     for i in range(0, len(rowSet)):
@@ -150,8 +151,7 @@ while futureGames < 4:
     newDate = today + timedelta(days=cont)
     date = formatDate(newDate)
     url = "http://stats.nba.com/stats/scoreboardV2?DayOffset=0&LeagueID=00&gameDate=" + date
-    response = getUrlContent(url)
-    data = json.loads(response.decode('utf-8'))
+    data = getUrlContent2(url)
     rowSet = data["resultSets"][0]["rowSet"]
     for i in range(0, len(rowSet)):
         if (rowSet[i][6] == spursID or rowSet[i][7] == spursID):
@@ -196,8 +196,8 @@ print ('Got future games')
 
 
 # Previous Games
-sidebarText += ('\n' + dateList[0] + ' | [](/r/' + awayList[0] + ') | @ | [](/r/' + homeList[0] + ') | ' + WLTimeList[0] + ' | ' + scoreTV[0])
-sidebarText += ('\n' + dateList[1] + ' | [](/r/' + awayList[1] + ') | @ | [](/r/' + homeList[1] + ') | ' + WLTimeList[1] + ' | ' + scoreTV[1])
+#sidebarText += ('\n' + dateList[0] + ' | [](/r/' + awayList[0] + ') | @ | [](/r/' + homeList[0] + ') | ' + WLTimeList[0] + ' | ' + scoreTV[0])
+#sidebarText += ('\n' + dateList[1] + ' | [](/r/' + awayList[1] + ') | @ | [](/r/' + homeList[1] + ') | ' + WLTimeList[1] + ' | ' + scoreTV[1])
 
 # Future Games
 for i in range(2, 6):
@@ -207,12 +207,12 @@ for i in range(2, 6):
 
 #------PLAYER STATS------
 playerNames = ["Tony Parker", "Danny Green", "Kawhi Leonard", "LaMarcus Aldridge", "Pau Gasol",
-"Patty Mills", "Manu Ginobili", "Kyle Anderson", "Jonathon Simmons", "David Lee",
-"Davis Bertans", "Dewayne Dedmon", "Bryn Forbes", "Dejounte Murray"]
+"Patty Mills", "Manu Ginobili", "Kyle Anderson", "Rudy Gay",
+"Davis Bertans", "Bryn Forbes", "Dejounte Murray"]
 
 playerIDs = ["2225", "201980", "202695", "200746", "2200", 
-"201988", "1938", "203937", "203613", "101135",
-"202722", "203473", "1627854", "1627749"]
+"201988", "1938", "203937", "200752",
+"202722", "1627854", "1627749"]
 
 rosterSize = len(playerNames)
 
@@ -230,8 +230,7 @@ sidebarText += ('\n**Player** | **PTS** | **REB** | **AST** | **STL** | **BLK**'
 for i in range(0,rosterSize):
     # Get data from stats.nba.com in json format
     url = "http://stats.nba.com/stats/playerprofilev2?playerID=" + playerIDs[i] + "&PerMode=PerGame"
-    response = getUrlContent(url)
-    data = json.loads(response.decode('utf-8'))
+    data = getUrlContent2(url)
 
     # Get headers and career stats by regular seasons
     headersList = data["resultSets"][0]["headers"]
@@ -288,9 +287,6 @@ sidebarText += ('\n5. [](http://en.wikipedia.org/wiki/2013%E2%80%9314_San_Antoni
 
 # Post sidebar text to subreddit
 print ('Reddit Crendentials (Must be moderator of subreddit)')
-#subreddit = raw_input('Subreddit: /r/')
-#username = raw_input('Username: ')
-#password = raw_input('Password: ')
 subreddit = 'nbaspurs'
 username = 'username'
 password = 'password'
@@ -298,7 +294,3 @@ print ('Wait until you see "Done!", ignore warnings')
 r = praw.Reddit(user_agent='/r/nbaspurs sidebar script by /u/jorgegil96 v1.0', client_id='Jkzw2sNCMGZT3Q', client_secret='ge4I8WXDJE9k1oElKEBGJP-PfJs', password=password, username=username)
 r.subreddit(subreddit).mod.update(description=sidebarText)
 print ('\nDone!')
-
-
-
-
