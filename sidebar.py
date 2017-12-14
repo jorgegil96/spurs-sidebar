@@ -113,7 +113,7 @@ while pastGames < 2:
                 awayList[1] = teamSubs[str(rowSet[i][7])]
                 scheduleList[1] = rowSet[i][5]
                 scoreSet = data["resultSets"][1]["rowSet"]
-                if scoreSet[i * 2][21] > scoreSet[i * 2 + 1][21]:
+                if scoreSet[i * 2][22] > scoreSet[i * 2 + 1][22]:
                     if rowSet[i][7] == spursID:
                         WLTimeList[1] = 'W'
                     else:
@@ -123,14 +123,14 @@ while pastGames < 2:
                         WLTimeList[1] = 'W'
                     else:
                         WLTimeList[1] = 'L'
-                scoreTV[1] = str(scoreSet[i * 2][21]) + '-' + str(scoreSet[i * 2 + 1][21])
+                scoreTV[1] = str(scoreSet[i * 2][22]) + '-' + str(scoreSet[i * 2 + 1][22])
             elif pastGames == 1:
                 dateList[0] = str(newDate.month) + '/' + str(newDate.day)
                 homeList[0] = teamSubs[str(rowSet[i][6])]
                 awayList[0] = teamSubs[str(rowSet[i][7])]
                 scheduleList[0] = rowSet[i][5]
                 scoreSet = data["resultSets"][1]["rowSet"]
-                if scoreSet[i * 2][21] > scoreSet[i * 2 + 1][21]:
+                if scoreSet[i * 2][22] > scoreSet[i * 2 + 1][22]:
                     if rowSet[i][7] == spursID:
                         WLTimeList[0] = 'W'
                     else:
@@ -140,7 +140,7 @@ while pastGames < 2:
                         WLTimeList[0] = 'W'
                     else:
                         WLTimeList[0] = 'L'
-                scoreTV[0] = str(scoreSet[i * 2][21]) + '-' + str(scoreSet[i * 2 + 1][21])
+                scoreTV[0] = str(scoreSet[i * 2][22]) + '-' + str(scoreSet[i * 2 + 1][22])
             # End if
             pastGames += 1
             # End if
@@ -162,14 +162,14 @@ while futureGames < 4:
         if rowSet[i][6] == spursID or rowSet[i][7] == spursID:
             if (cont == 0):
                 scoreSet = data["resultSets"][1]["rowSet"]
-                if scoreSet[i * 2][21] == None:
+                if scoreSet[i * 2][22] == None:
                     WLTimeList[2 + futureGames] = timeStringToCentral(rowSet[i][4])
                     if rowSet[i][11] == None:
                         scoreTV[2 + futureGames] = 'FSSW'
                     else:
                         scoreTV[2 + futureGames] = str(rowSet[i][11])
                 else:
-                    if scoreSet[i * 2][21] > scoreSet[i * 2 + 1][21]:
+                    if scoreSet[i * 2][22] > scoreSet[i * 2 + 1][22]:
                         if rowSet[i][7] == spursID:
                             WLTimeList[2 + futureGames] = 'W'
                         else:
@@ -179,7 +179,7 @@ while futureGames < 4:
                             WLTimeList[2 + futureGames] = 'W'
                         else:
                             WLTimeList[2 + futureGames] = 'L'
-                    scoreTV[2 + futureGames] = str(scoreSet[i * 2][21]) + '-' + str(scoreSet[i * 2 + 1][21])
+                    scoreTV[2 + futureGames] = str(scoreSet[i * 2][22]) + '-' + str(scoreSet[i * 2 + 1][22])
             else:
                 WLTimeList[2 + futureGames] = timeStringToCentral(rowSet[i][4])
                 if rowSet[i][11] is None:
@@ -212,12 +212,14 @@ for i in range(2, 6):
 
 # ------PLAYER STATS------
 playerNames = ["Tony Parker", "Danny Green", "Kawhi Leonard", "LaMarcus Aldridge", "Pau Gasol",
-               "Patty Mills", "Manu Ginobili", "Kyle Anderson", "Rudy Gay",
-               "Davis Bertans", "Bryn Forbes", "Dejounte Murray"]
+               "Patty Mills", "Manu Ginobili", "Kyle Anderson", "Rudy Gay", "Davis Bertans",
+               "Bryn Forbes", "Dejounte Murray", "Joffrey Lauvergne", "Derrick White", "Brandon Paul",
+               "Matt Costello", "Darrun Hilliard"]
 
 playerIDs = ["2225", "201980", "202695", "200746", "2200",
-             "201988", "1938", "203937", "200752",
-             "202722", "1627854", "1627749"]
+             "201988", "1938", "203937", "200752", "202722",
+             "1627854", "1627749", "203530", "1628401", "203464",
+             "1627856", "1626199"]
 
 rosterSize = len(playerNames)
 
@@ -268,9 +270,11 @@ for i in range(0, rosterSize):
 print('Got roster stats')
 
 # Table footer
+'''
 sidebarText += ('\
 n\n| | | | |')
 sidebarText += '\n:--:|:--:|:--:|:--:|\n'
+'''
 
 # ------RULES-------
 sidebarText += '\n\n**BE NICE.**\n'
