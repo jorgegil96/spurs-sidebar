@@ -296,7 +296,7 @@ sidebarText += '\n* [](http://en.wikipedia.org/wiki/2002%E2%80%9303_San_Antonio_
 sidebarText += '\n* [](http://en.wikipedia.org/wiki/2004%E2%80%9305_San_Antonio_Spurs_season)'
 sidebarText += '\n* [](http://en.wikipedia.org/wiki/2006%E2%80%9307_San_Antonio_Spurs_season)'
 sidebarText += '\n* [](http://en.wikipedia.org/wiki/2013%E2%80%9314_San_Antonio_Spurs_season)'
-sidebarText += '\n* [](http://en.wikipedia.org/wiki/2017%E2%80%9318_San_Antonio_Spurs_season)'
+sidebarText += '\n* [](http://en.wikipedia.org/wiki/2017%E2%80%9318_San_Antonio_Spurs_season)\n'
 
 sidebarText += '\n1. [](http://en.wikipedia.org/wiki/James_Silas)'
 sidebarText += '\n2. [](http://en.wikipedia.org/wiki/George_Gervin)'
@@ -305,7 +305,7 @@ sidebarText += '\n4. [](http://en.wikipedia.org/wiki/David_Robinson_%28basketbal
 sidebarText += '\n5. [](http://en.wikipedia.org/wiki/Sean_Elliott)'
 sidebarText += '\n6. [](http://en.wikipedia.org/wiki/Avery_Johnson)'
 sidebarText += '\n7. [](http://en.wikipedia.org/wiki/Bruce_Bowen)'
-sidebarText += '\n8. [](http://en.wikipedia.org/wiki/Tim_Duncan)'
+sidebarText += '\n8. [](http://en.wikipedia.org/wiki/Tim_Duncan)\n'
 
 sidebarText += '\n* [](https://en.wikipedia.org/wiki/1999_NBA_Playoffs)'
 sidebarText += '\n* [](https://en.wikipedia.org/wiki/2003_NBA_Playoffs)'
