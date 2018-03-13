@@ -312,7 +312,12 @@ sidebarText += '\n* [](https://en.wikipedia.org/wiki/2003_NBA_Playoffs)'
 sidebarText += '\n* [](https://en.wikipedia.org/wiki/2005_NBA_Playoffs)'
 sidebarText += '\n* [](https://en.wikipedia.org/wiki/2007_NBA_Playoffs)'
 sidebarText += '\n* [](https://en.wikipedia.org/wiki/2013_NBA_Playoffs)'
-sidebarText += '\n* [](https://en.wikipedia.org/wiki/2014_NBA_Playoffs)'
+sidebarText += '\n* [](https://en.wikipedia.org/wiki/2014_NBA_Playoffs)\n'
+
+sidebarText += '\n######nba######'
+sidebarText += '\n* [](http://reddit.com/r/nba)\n'
+sidebarText += '\n#####reddit#####'
+sidebarText += '\n* [](http://reddit.com)'
 
 # Post sidebar text to subreddit
 print('Reddit Crendentials (Must be moderator of subreddit)')
