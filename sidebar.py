@@ -96,9 +96,10 @@ awayList = [None] * 6
 WLTimeList = [None] * 6
 scoreTV = [None] * 6
 
+limit = 10  # Stop looking for games after 10 days.
 pastGames = 0
 cont = 1
-while pastGames < 2:
+while pastGames < 2 and cont < limit:
     newDate = today - timedelta(days=cont)
     date = formatDate(newDate)
     url = "http://stats.nba.com/stats/scoreboardV2?DayOffset=0&LeagueID=00&gameDate=" + date
@@ -152,7 +153,7 @@ print('Got past games')
 
 futureGames = 0
 cont = 0
-while futureGames < 4:
+while futureGames < 4 and cont < limit:
     newDate = today + timedelta(days=cont)
     date = formatDate(newDate)
     url = "http://stats.nba.com/stats/scoreboardV2?DayOffset=0&LeagueID=00&gameDate=" + date
@@ -160,11 +161,11 @@ while futureGames < 4:
     rowSet = data["resultSets"][0]["rowSet"]
     for i in range(0, len(rowSet)):
         if rowSet[i][6] == spursID or rowSet[i][7] == spursID:
-            if (cont == 0):
+            if cont == 0:
                 scoreSet = data["resultSets"][1]["rowSet"]
-                if scoreSet[i * 2][22] == None:
+                if scoreSet[i * 2][22] is None:
                     WLTimeList[2 + futureGames] = timeStringToCentral(rowSet[i][4])
-                    if rowSet[i][11] == None:
+                    if rowSet[i][11] is None:
                         scoreTV[2 + futureGames] = 'FSSW'
                     else:
                         scoreTV[2 + futureGames] = str(rowSet[i][11])
@@ -200,15 +201,12 @@ while futureGames < 4:
 print('Got future games')
 
 # Previous Games
-sidebarText += ('\n' + dateList[0] + ' | [](/r/' + awayList[0] + ') | @ | [](/r/' + homeList[0] + ') | ' + WLTimeList[0] + ' | ' + scoreTV[0])
-sidebarText += ('\n' + dateList[1] + ' | [](/r/' + awayList[1] + ') | @ | [](/r/' + homeList[1] + ') | ' + WLTimeList[1] + ' | ' + scoreTV[1])
+for i in range(0, pastGames):
+    sidebarText += ('\n' + dateList[i] + ' | [](/r/' + awayList[i] + ') | @ | [](/r/' + homeList[i] + ') | ' + WLTimeList[i] + ' | ' + scoreTV[i])
 
 # Future Games
-for i in range(2, 6):
-    sidebarText += (
-        '\n' + dateList[i] + ' | [](/r/' + awayList[i] + ') | @ | [](/r/' + homeList[i] + ') | ' + WLTimeList[
-            i] + ' | ' +
-        scoreTV[i])
+for i in range(2, 2 + futureGames):
+    sidebarText += ('\n' + dateList[i] + ' | [](/r/' + awayList[i] + ') | @ | [](/r/' + homeList[i] + ') | ' + WLTimeList[i] + ' | ' +scoreTV[i])
 
 # ------PLAYER STATS------
 playerNames = ["Tony Parker", "Danny Green", "Kawhi Leonard", "LaMarcus Aldridge", "Pau Gasol",
@@ -222,12 +220,6 @@ playerIDs = ["2225", "201980", "202695", "200746", "2200",
              "1627856", "1626199"]
 
 rosterSize = len(playerNames)
-
-# sidebarText += ('\n\n| | | | |')
-# sidebarText += ('\n:--:|:--:|:--:|:--:|')
-# sidebarText += ('\n------')
-# sidebarText += ('\n**Team Stats**\n')
-# sidebarText += ('\n------\n')
 
 # Stats table Headers
 sidebarText += '\n\n| | | | | | |'
