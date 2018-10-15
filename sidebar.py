@@ -30,7 +30,7 @@ def timeStringToCentral(s):
 
 
 print('Please wait, the script may take a while to run')
-recordUrl = "http://stats.nba.com/stats/playoffpicture?LeagueID=00&SeasonID=22017"
+recordUrl = "http://stats.nba.com/stats/playoffpicture?LeagueID=00&SeasonID=22018"
 recordData = getUrlContent2(recordUrl)
 print('Got record')
 
@@ -45,7 +45,7 @@ sidebarText = (
     '[Pounding the Rock](http://www.poundingtherock.com/) | [Spurstalk](http://www.spurstalk.com/forums/) | [Spurs '
     'Discord](https://discord.gg/rcvBDQ6)')
 sidebarText += '\n\n------'
-sidebarText += ('\n**[2017-2018 Spurs Schedule](http://www.nba.com/spurs/schedule/) | Record: ' + spursRecord + '**\n')
+sidebarText += ('\n**[2018-2019 Spurs Schedule](http://www.nba.com/spurs/schedule/) | Record: ' + spursRecord + '**\n')
 sidebarText += '\n------\n'
 
 teamSubs = {'1610612742': 'mavericks',
@@ -209,15 +209,15 @@ for i in range(2, 2 + futureGames):
     sidebarText += ('\n' + dateList[i] + ' | [](/r/' + awayList[i] + ') | @ | [](/r/' + homeList[i] + ') | ' + WLTimeList[i] + ' | ' +scoreTV[i])
 
 # ------PLAYER STATS------
-playerNames = ["Tony Parker", "Danny Green", "Kawhi Leonard", "LaMarcus Aldridge", "Pau Gasol",
-               "Patty Mills", "Manu Ginobili", "Kyle Anderson", "Rudy Gay", "Davis Bertans",
-               "Bryn Forbes", "Dejounte Murray", "Joffrey Lauvergne", "Derrick White", "Brandon Paul",
-               "Matt Costello", "Darrun Hilliard"]
+playerNames = ["Dejounte Murray", "Marco Belinelli", "DeMar DeRozan", "LaMarcus Aldridge", "Pau Gasol",
+               "Patty Mills", "Derrick White", "Jakob Poeltl", "Rudy Gay", "Davis Bertans",
+               "Bryn Forbes", "Quincy Pondexter",
+               "Dante Cunningham"]
 
-playerIDs = ["2225", "201980", "202695", "200746", "2200",
-             "201988", "1938", "203937", "200752", "202722",
-             "1627854", "1627749", "203530", "1628401", "203464",
-             "1627856", "1626199"]
+playerIDs = ["1627749", "201158", "201942", "200746", "2200",
+             "201988", "1628401", "1627751", "200752", "202722",
+             "1627854", "202347",
+             "201967"]
 
 rosterSize = len(playerNames)
 
